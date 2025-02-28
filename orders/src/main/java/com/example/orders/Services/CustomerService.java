@@ -4,12 +4,16 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.example.orders.DTO.CustomerDTO;
 import com.example.orders.Entities.Customer;
 import com.example.orders.Repositories.CustomerRepository;
 import com.example.orders.Services.Utils.MappingUtils;
+
+import jakarta.validation.Valid;
 @Service
+@Validated
 public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
@@ -35,11 +39,11 @@ public class CustomerService {
         return customerRepository.findById(id).orElse(null);
     }
 
-    public Customer addCustomer(Customer customer) {
+    public Customer addCustomer(@Valid Customer customer) {
         return customerRepository.save(customer);
     }
 
-    public Customer updateCustomer(String name, Long id, Customer updatedCustomer) {
+    public Customer updateCustomer(String name, Long id, @Valid Customer updatedCustomer) {
         if (customerRepository.existsById(id)) {
             updatedCustomer.setName(name);
             return customerRepository.save(updatedCustomer);
